@@ -10,16 +10,21 @@ import java.util.Date;
  */
 public class FPS {
 
-    //** Following 2 fields are in charge of a size of a FPS label in a JFrame (screen).
+    private static final int FPS_LABEL_Y_DEFAULT_ORDINATE = 25;
+    private static final String FPS_LABEL_BEGIN_TEXT = "FPS:";
+
+    //** Following 2 fields stand for a size of a FPS label in a JFrame (screen).
     private int width = 60;
     private int height = 15;
     //** Updating FPS label on a JFrame every nth milliseconds.
     private int updateTimeOut = 200;     // in millisecs
-    private JLabel label = new JLabel("FPS:");
+    //** Number of frames appeared in one second.
+    private int framesCount;
+    private JLabel label = new JLabel(FPS_LABEL_BEGIN_TEXT);
     //** Time span in milliseconds, when a count of a frames begins.
-    private long countBeginTime;
+    private long beginTime;
     //** Time span in milliseconds, when a count of a frames ends.
-    private long countEndTime = (new Date()).getTime();
+    private long endTime = (new Date()).getTime();
     //** Color of a JLabel that displays the FPS value.
     private Color color = new Color(150, 150, 150);
 
@@ -46,9 +51,22 @@ public class FPS {
     public void setFPSLabelDefaultPosition(JFrame frame) {
         label.setBounds(
                 frame.getWidth() - width,
-                5,
+                FPS_LABEL_Y_DEFAULT_ORDINATE,
                 width,
                 height);
+    }
+
+    /**
+     * Counting a number of frames appeared on a screen in one second.
+     */
+    public void countFPS() {
+        framesCount++;
+        if (endTime - beginTime >= updateTimeOut) {
+            beginTime = (new Date()).getTime();
+            //** Such a computation is required due to a variative fps measurement time
+            label.setText(FPS_LABEL_BEGIN_TEXT + framesCount * (1000 / updateTimeOut));
+            framesCount = 0;
+        }
     }
 
     public int getWidth() {
@@ -83,20 +101,20 @@ public class FPS {
         this.label = label;
     }
 
-    public long getCountBeginTime() {
-        return countBeginTime;
+    public long getBeginTime() {
+        return beginTime;
     }
 
-    public void setCountBeginTime(long countBeginTime) {
-        this.countBeginTime = countBeginTime;
+    public void setBeginTime(long beginTime) {
+        this.beginTime = beginTime;
     }
 
-    public long getCountEndTime() {
-        return countEndTime;
+    public long getEndTime() {
+        return endTime;
     }
 
-    public void setCountEndTime(long countEndTime) {
-        this.countEndTime = countEndTime;
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public Color getColor() {
@@ -105,5 +123,13 @@ public class FPS {
 
     public void setColor(Color colorFPS) {
         this.color = colorFPS;
+    }
+
+    public int getFramesCount() {
+        return framesCount;
+    }
+
+    public void setFramesCount(int framesCount) {
+        this.framesCount = framesCount;
     }
 }

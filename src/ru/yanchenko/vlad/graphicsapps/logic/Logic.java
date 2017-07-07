@@ -37,7 +37,7 @@ public class Logic {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                oRepository.getFps().setCountEndTime((new Date()).getTime());
+                oRepository.getFps().setEndTime((new Date()).getTime());
                 //** If balls are converging
                 if (oRepository.isConverge()) {
                     /**
@@ -173,16 +173,7 @@ public class Logic {
                         System.out.println("But Rendering() is present !");
                     }
                 }
-
-                oRepository.setFramesCount(oRepository.getFramesCount() + 1);
-                if ((oRepository.getFps().getCountEndTime() - oRepository.getFps().getCountBeginTime())
-                        >= oRepository.getFps().getUpdateTimeOut()) {
-                    oRepository.getFps().setCountBeginTime((new Date()).getTime());
-                    //** Such a computeulation is required due to a variative fps measurement time
-                    oRepository.getFps().getLabel().setText("FPS: " + oRepository.getFramesCount()
-                            * (1000 / oRepository.getFps().getUpdateTimeOut()));
-                    oRepository.setFramesCount(0);
-                }
+                oRepository.getFps().countFPS();
             }
         }
 
@@ -257,7 +248,7 @@ public class Logic {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                oRepository.getFps().setCountEndTime((new Date()).getTime());
+                oRepository.getFps().setEndTime((new Date()).getTime());
                 /**
                  * This action makes balls roam around the screen. Deltas are
                  * taken as they were left during a convergence.
@@ -322,14 +313,14 @@ public class Logic {
 
                 oRepository.getoDrawing().repaint();
 
-                oRepository.setFramesCount(oRepository.getFramesCount() + 1);
-                if ((oRepository.getFps().getCountEndTime() - oRepository.getFps().getCountBeginTime())
+                oRepository.getFps().setFramesCount(oRepository.getFps().getFramesCount() + 1);
+                if ((oRepository.getFps().getEndTime() - oRepository.getFps().getBeginTime())
                         >= oRepository.getFps().getUpdateTimeOut()) {
-                    oRepository.getFps().setCountBeginTime((new Date()).getTime());
+                    oRepository.getFps().setBeginTime((new Date()).getTime());
                     //** Such a computeulation is required due to a variative fps measurement time
-                    oRepository.getFps().getLabel().setText("FPS: " + oRepository.getFramesCount()
+                    oRepository.getFps().getLabel().setText("FPS: " + oRepository.getFps().getFramesCount()
                             * (1000 / oRepository.getFps().getUpdateTimeOut()));
-                    oRepository.setFramesCount(0);
+                    oRepository.getFps().setFramesCount(0);
                 }
             }
         }

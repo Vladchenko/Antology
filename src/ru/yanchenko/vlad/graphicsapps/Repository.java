@@ -34,8 +34,8 @@ public class Repository {
     private boolean fullScreen = true;
     //** Trigger used to check if a window frame is to be seen.
     private boolean windowFrame = false;
-    //** Fields used for a FPS representation
-    private int framesCount;
+//    //** Fields used for a FPS representation
+//    private int framesCount;
 
     /**
      * When full screen is off, then following fields stand for a size of a
@@ -529,14 +529,14 @@ public class Repository {
     public void setPntScreenCenter(Point pntScreenCenter) {
         this.pntScreenCenter = pntScreenCenter;
     }
-
-    public int getFramesCount() {
-        return framesCount;
-    }
-
-    public void setFramesCount(int framesCount) {
-        this.framesCount = framesCount;
-    }
+//
+//    public int getFramesCount() {
+//        return framesCount;
+//    }
+//
+//    public void setFramesCount(int framesCount) {
+//        this.framesCount = framesCount;
+//    }
 
     public Color getClrWindowBackground() {
         return clrWindowBackground;
