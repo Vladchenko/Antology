@@ -17,6 +17,7 @@ public class Screen {
 //    private int ScreenWidth = 1200;
 //    private int ScreenHeight = 800;
     private Color clrWindowBackground;
+    // Used to incorporate a JPanel, on which to draw a graphics on.
     private JFrame frame;
 //    //** Field used to find out a size of a screen
 //    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -27,15 +28,19 @@ public class Screen {
     //** Center of a plane (screen)
     private Point screenCenter;
     //** Trigger used to check if a window frame is to be seen.
-    private boolean windowFrame = false;
+    private boolean windowFrame;
     private FPS fps = new FPS();
     //** In charge of running / stopping / continuing convergence.
-    private JLabel lblRenderButton = new JLabel(getImgRenderButton());
+    private RenderButton renderButton;
+//    private JLabel renderButton;
 
     public Screen() {
         clrWindowBackground = COLOR_SCREEN_BACKGROUND;
         frame = new JFrame();
         screenCenter = new Point();
+        // TODO Make a renderButton first.
+        renderButton = new RenderButton();
+//                JLabel(imgRenderButton);
     }
     //** Initializing a JFrame
     private void initializeScreen(Rendering rendering) {
@@ -72,10 +77,10 @@ public class Screen {
         fps.getLabel().setForeground(fps.getColor());
         frame.add(fps.getLabel());
         frame.add(oRepository.getLblRenderButton());
-        this.lblRenderButton.setSize(
+        this.renderButton.setSize(
                 this.imgRenderButton.getIconWidth(),
                 this.imgRenderButton.getIconHeight());
-        this.lblRenderButton.addMouseListener(new LabelMouseListener());
+        this.renderButton.addMouseListener(new LabelMouseListener());
     }
 
     //** Initializing some data - images, frame, adding listeners.
