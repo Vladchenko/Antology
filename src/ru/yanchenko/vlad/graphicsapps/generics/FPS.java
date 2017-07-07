@@ -10,29 +10,40 @@ import java.util.Date;
  */
 public class FPS {
 
+    private static final int FPS_LABEL_DEFAULT_WIDTH = 60;
+    private static final int FPS_LABEL_DEFAULT_HEIGHT = 15;
+    private static final int FPS_DEFAULT_UPDATE_TIMEOUT = 200;
     // Default position of a FPS label by y ordinate on a screen.
     private static final int FPS_LABEL_Y_DEFAULT_ORDINATE = 25;
-    // Text that is shown in a FPS label at the beginning.
+    // Text that is shown in a FPS label at the beginning of this label.
     private static final String FPS_LABEL_BEGIN_TEXT = "FPS:";
     private static final Color FPS_LABEL_DEFAULT_COLOR = new Color(150, 150, 150);
 
+
     // Following 2 fields stand for a size of a FPS label in a JFrame (screen).
-    private int width = 60;
-    private int height = 15;
+    private int width;
+    private int height;
     // Updating FPS label on a JFrame every nth milliseconds.
-    private int updateTimeOut = 200;     // in millisecs
+    private int updateTimeOut;     // in millisecs
     // Number of frames appeared in one second.
     private int framesCount;
     // label where fps is shown
-    private JLabel label = new JLabel(FPS_LABEL_BEGIN_TEXT);
+    private JLabel label;
     // Time span in milliseconds, when a count of a frames begins.
     private long beginTime;
     // Time span in milliseconds, when a count of a frames ends.
-    private long endTime = (new Date()).getTime();
+    private long endTime;
     // Color of a JLabel that displays the FPS value.
-    private Color color = FPS_LABEL_DEFAULT_COLOR;
+    private Color color;
 
-    public FPS() { }
+    public FPS() {
+        width = FPS_LABEL_DEFAULT_WIDTH;
+        height = FPS_LABEL_DEFAULT_HEIGHT;
+        updateTimeOut = FPS_DEFAULT_UPDATE_TIMEOUT;
+        label = new JLabel(FPS_LABEL_BEGIN_TEXT);
+        endTime = (new Date()).getTime();
+        color = FPS_LABEL_DEFAULT_COLOR;
+    }
 
     /**
      * Setting a position of FPS label on a JFrame, with a specific coordinates.
