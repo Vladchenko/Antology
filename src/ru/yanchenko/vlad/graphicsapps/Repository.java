@@ -529,14 +529,6 @@ public class Repository {
     public void setPntScreenCenter(Point pntScreenCenter) {
         this.pntScreenCenter = pntScreenCenter;
     }
-//
-//    public int getFramesCount() {
-//        return framesCount;
-//    }
-//
-//    public void setFramesCount(int framesCount) {
-//        this.framesCount = framesCount;
-//    }
 
     public Color getClrWindowBackground() {
         return clrWindowBackground;
