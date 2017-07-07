@@ -10,23 +10,27 @@ import java.util.Date;
  */
 public class FPS {
 
+    // Default position of a FPS label by y ordinate on a screen.
     private static final int FPS_LABEL_Y_DEFAULT_ORDINATE = 25;
+    // Text that is shown in a FPS label at the beginning.
     private static final String FPS_LABEL_BEGIN_TEXT = "FPS:";
+    private static final Color FPS_LABEL_DEFAULT_COLOR = new Color(150, 150, 150);
 
-    //** Following 2 fields stand for a size of a FPS label in a JFrame (screen).
+    // Following 2 fields stand for a size of a FPS label in a JFrame (screen).
     private int width = 60;
     private int height = 15;
-    //** Updating FPS label on a JFrame every nth milliseconds.
+    // Updating FPS label on a JFrame every nth milliseconds.
     private int updateTimeOut = 200;     // in millisecs
-    //** Number of frames appeared in one second.
+    // Number of frames appeared in one second.
     private int framesCount;
+    // label where fps is shown
     private JLabel label = new JLabel(FPS_LABEL_BEGIN_TEXT);
-    //** Time span in milliseconds, when a count of a frames begins.
+    // Time span in milliseconds, when a count of a frames begins.
     private long beginTime;
-    //** Time span in milliseconds, when a count of a frames ends.
+    // Time span in milliseconds, when a count of a frames ends.
     private long endTime = (new Date()).getTime();
-    //** Color of a JLabel that displays the FPS value.
-    private Color color = new Color(150, 150, 150);
+    // Color of a JLabel that displays the FPS value.
+    private Color color = FPS_LABEL_DEFAULT_COLOR;
 
     public FPS() { }
 
@@ -69,6 +73,7 @@ public class FPS {
         }
     }
 
+    //region getters and setters
     public int getWidth() {
         return width;
     }
@@ -132,4 +137,5 @@ public class FPS {
     public void setFramesCount(int framesCount) {
         this.framesCount = framesCount;
     }
+    //endregion
 }
