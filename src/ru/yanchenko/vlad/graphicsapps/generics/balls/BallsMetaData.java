@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.yanchenko.vlad.graphicsapps.generics;
+package ru.yanchenko.vlad.graphicsapps.generics.balls;
 
 import java.awt.Point;
 

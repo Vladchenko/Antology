@@ -13,7 +13,7 @@ import ru.yanchenko.vlad.graphicsapps.Rendering;
 import ru.yanchenko.vlad.graphicsapps.Repository;
 import ru.yanchenko.vlad.graphicsapps.beans.Ball;
 import ru.yanchenko.vlad.graphicsapps.beans.BallMoved;
-import ru.yanchenko.vlad.graphicsapps.generics.Balls;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.Balls;
 
 //** This class is in charge of a logic of a program */
 public class Logic {
@@ -71,7 +71,7 @@ public class Logic {
                                     getBallsScattered()[i].getdX() < 0
                                     || oRepository.getBalls().
                                     getBallsScattered()[i].getX()
-                                    > (oRepository.getScreenWidth()
+                                    > (oRepository.getScreen().getScreenWidth()
                                     - oRepository.getBalls().
                                     getBallSelected().getImage().getWidth())
                                     && oRepository.getBalls().
@@ -91,7 +91,7 @@ public class Logic {
                                 getBallsScattered()[i].getdY() < 0
                                 || oRepository.getBalls().
                                 getBallsScattered()[i].getY()
-                                > (oRepository.getScreenHeight()
+                                > (oRepository.getScreen().getScreenHeight()
                                 - oRepository.getBalls().
                                 getBallSelected().getImage().getHeight())
                                 && oRepository.getBalls().
@@ -265,7 +265,7 @@ public class Logic {
                             getBallsScattered()[i].getdX() < 0
                             || oRepository.getBalls().
                             getBallsScattered()[i].getX()
-                            > (oRepository.getScreenWidth()
+                            > (oRepository.getScreen().getScreenWidth()
                             - oRepository.getBalls().
                             getBallSelected().getImage().getWidth())
                             && oRepository.getBalls().
@@ -292,7 +292,7 @@ public class Logic {
                             getBallsScattered()[i].getdY() < 0
                             || oRepository.getBalls().
                             getBallsScattered()[i].getY()
-                            > (oRepository.getScreenHeight()
+                            > (oRepository.getScreen().getScreenHeight()
                             - oRepository.getBalls().
                             getBallSelected().getImage().getHeight())
                             && oRepository.getBalls().

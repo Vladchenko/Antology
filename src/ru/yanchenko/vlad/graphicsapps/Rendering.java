@@ -1,6 +1,6 @@
 package ru.yanchenko.vlad.graphicsapps;
 
-import java.awt.Graphics;
+import java.awt.*;
 import javax.swing.JPanel;
 
 /**

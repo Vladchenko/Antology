@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.yanchenko.vlad.graphicsapps.generics;
+package ru.yanchenko.vlad.graphicsapps.generics.balls;
 
 import ru.yanchenko.vlad.graphicsapps.beans.Ball;
 import ru.yanchenko.vlad.graphicsapps.beans.BallMoved;
@@ -43,6 +43,7 @@ public class Balls {
     private double offsetX = -1;
     private double offsetY = -1;
     private double angleStep = 0.05;
+    private boolean roam;
     //** A ball that user is to select by clicking a mouse on.
     private BallMoved ballSelected;
     //** Dummy ball.
@@ -626,6 +627,15 @@ public class Balls {
 //    }
 
     //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
+
+    public boolean isRoam() {
+        return roam;
+    }
+
+    public void setRoam(boolean roam) {
+        this.roam = roam;
+    }
+
     public int getScatterMode() {
         return scatterMode;
     }

@@ -9,6 +9,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.ImageIcon;
 import ru.yanchenko.vlad.graphicsapps.Repository;
+import ru.yanchenko.vlad.graphicsapps.generics.Keyboard;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.BallsLogic;
 
 /**
  *
@@ -16,218 +18,173 @@ import ru.yanchenko.vlad.graphicsapps.Repository;
  */
 public class FrameMouseWheelListener implements MouseWheelListener {
 
-    private Repository oRepository = Repository.getInstance();
+    private Repository repository = Repository.getInstance();
+    private Keyboard keyboard;
+    private BallsLogic ballsLogic;
+
+    public FrameMouseWheelListener() {
+        keyboard = new Keyboard();
+    }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
         //<editor-fold defaultstate="collapsed" desc="When no ALT / CTRL / SHIFT keys pressed">
-        if (!oRepository.isKeyAlt()
-                && !oRepository.isKeyCtrl()
-                && !oRepository.isKeyShift()) {
+        if (!repository.isKeyAlt()
+                && !repository.isKeyCtrl()
+                && !repository.isKeyShift()) {
 
             /**
              * This operation rotates a scattered balls around a selected one.
              */
-            //** When there is no any scattered ball selected
-            if (oRepository.getBalls().getBallSelected().equals(
-                    oRepository.getBalls().getBallDummy())) {
-
-                if (e.getWheelRotation() < 0) {
-
-                    //** Moving a destination balls in a current figure
-                    oRepository.getBalls().setAnglDestDotsShift(
-                            oRepository.getBalls().getAnglDestDotsShift()
-                            - 0.04);
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
-                            0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
-                }
-
-                if (e.getWheelRotation() > 0) {
-
-                    //** Moving a destination balls in a current figure
-                    oRepository.getBalls().setAnglDestDotsShift(
-                            oRepository.getBalls().getAnglDestDotsShift()
-                            + 0.04);
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
-                            0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
-                }
-                //** When there is some scattered ball selected
-            } else {
-                if (e.getWheelRotation() < 0) {
-                    oRepository.getoLogic().computePolarCoors(
-                            oRepository.getBalls());
-                    //** Increasing an angle
-                    oRepository.getBalls().setAngle(
-                            +oRepository.getBalls().getAngleStep());
-                    oRepository.getoLogic().computeDekartCoors(
-                            oRepository.getBalls());
-                }
-                if (e.getWheelRotation() > 0) {
-                    oRepository.getoLogic().computePolarCoors(
-                            oRepository.getBalls());
-                    //** Decreasing an angle
-                    oRepository.getBalls().setAngle(
-                            -oRepository.getBalls().getAngleStep());
-                    oRepository.getoLogic().computeDekartCoors(
-                            oRepository.getBalls());
-                }
-            }
+            ballsLogic.rotateBallsAroundOne(e.getWheelRotation(),
+                    repository.getScreen().getScreenWidth(),
+                    repository.getScreen().getScreenHeight());
         }
-//</editor-fold>
+        //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="When CTRL is pressed">
-        if (oRepository.isKeyCtrl()) {
+        if (repository.isKeyCtrl()) {
 
             //** When there is no any scattered ball selected
-            if (oRepository.getBalls().getBallSelected().equals(
-                    oRepository.getBalls().getBallDummy())) {
+            if (repository.getBalls().getBallSelected().equals(
+                    repository.getBalls().getBallDummy())) {
 
                 if (e.getWheelRotation() < 0) {
                     
                     //** Increasing a size of a destination balls figure
-                    oRepository.getBalls().setRadius(
-                            oRepository.getBalls().getRadius() + 15);
-                    oRepository.getBalls().setRadiusFloating(
-                            oRepository.getBalls().getRadiusFloating() + 3);
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
+                    repository.getBalls().setRadius(
+                            repository.getBalls().getRadius() + 15);
+                    repository.getBalls().setRadiusFloating(
+                            repository.getBalls().getRadiusFloating() + 3);
+                    repository.getBalls().scatterTheBalls(
+                            repository.getBalls().getBallsDestination(),
                             0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
+                            repository.getScreen().getScreenWidth(),
+                            repository.getScreen().getScreenHeight(),
+                            repository.getBallsImages().getImgScattered(),
+                            !repository.isRoam());
                 }
 
                 if (e.getWheelRotation() > 0) {
                     //** Decreasing a size of a destination balls figure
-                    oRepository.getBalls().setRadius(
-                            oRepository.getBalls().getRadius() - 15);
-                    oRepository.getBalls().setRadiusFloating(
-                            oRepository.getBalls().getRadiusFloating() - 3);
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
+                    repository.getBalls().setRadius(
+                            repository.getBalls().getRadius() - 15);
+                    repository.getBalls().setRadiusFloating(
+                            repository.getBalls().getRadiusFloating() - 3);
+                    repository.getBalls().scatterTheBalls(
+                            repository.getBalls().getBallsDestination(),
                             0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
+                            repository.getScreen().getScreenWidth(),
+                            repository.getScreen().getScreenHeight(),
+                            repository.getBallsImages().getImgScattered(),
+                            !repository.isRoam());
                 }
                 //** When there is some ball selected
             } else {
                 if (e.getWheelRotation() < 0) {
-                    oRepository.getoLogic().computePolarCoors(
-                            oRepository.getBalls());
-                    oRepository.getBalls().setAngle(0);
-                    for (int i = 0; i < oRepository.getBalls().
+                    repository.getoLogic().computePolarCoors(
+                            repository.getBalls());
+                    repository.getBalls().setAngle(0);
+                    for (int i = 0; i < repository.getBalls().
                             getBallsMetaData().length; i++) {
-                        oRepository.getBalls().getBallsMetaData()[i].setRadius(
-                                oRepository.getBalls().
+                        repository.getBalls().getBallsMetaData()[i].setRadius(
+                                repository.getBalls().
                                 getBallsMetaData()[i].getRadius()
-                                + oRepository.getBalls().
+                                + repository.getBalls().
                                 getBallsMetaData()[i].getRadius() / 20);
 
                     }
-                    oRepository.getoLogic().computeDekartCoors(
-                            oRepository.getBalls());
+                    repository.getoLogic().computeDekartCoors(
+                            repository.getBalls());
                 }
                 if (e.getWheelRotation() > 0) {
-                    oRepository.getoLogic().computePolarCoors(
-                            oRepository.getBalls());
-                    oRepository.getBalls().setAngle(0);
-                    for (int i = 0; i < oRepository.getBalls().
+                    repository.getoLogic().computePolarCoors(
+                            repository.getBalls());
+                    repository.getBalls().setAngle(0);
+                    for (int i = 0; i < repository.getBalls().
                             getBallsMetaData().length; i++) {
-                        oRepository.getBalls().getBallsMetaData()[i].setRadius(
-                                oRepository.getBalls().
+                        repository.getBalls().getBallsMetaData()[i].setRadius(
+                                repository.getBalls().
                                 getBallsMetaData()[i].getRadius()
-                                - oRepository.getBalls().
+                                - repository.getBalls().
                                 getBallsMetaData()[i].getRadius() / 20);
 
                     }
-                    oRepository.getoLogic().computeDekartCoors(
-                            oRepository.getBalls());
+                    repository.getoLogic().computeDekartCoors(
+                            repository.getBalls());
                 }
             }
         }
 //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="When SHIFT is pressed">
-        if (oRepository.isKeyShift()) {
+        if (repository.isKeyShift()) {
 
             //** When there is no any scattered ball selected
-            if (oRepository.getBalls().getBallSelected().equals(
-                    oRepository.getBalls().getBallDummy())) {
+            if (repository.getBalls().getBallSelected().equals(
+                    repository.getBalls().getBallDummy())) {
 
                 if (e.getWheelRotation() < 0) {
                     //** Changing a figure of a destination balls
-                    oRepository.getBalls().setScatterMode(
-                            oRepository.getBalls().getScatterMode() + 1
+                    repository.getBalls().setScatterMode(
+                            repository.getBalls().getScatterMode() + 1
                     );
-                    if (oRepository.getBalls().getScatterMode() > 24) {
-                        oRepository.getBalls().setScatterMode(0);
+                    if (repository.getBalls().getScatterMode() > 24) {
+                        repository.getBalls().setScatterMode(0);
                     }
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
+                    repository.getBalls().scatterTheBalls(
+                            repository.getBalls().getBallsDestination(),
                             0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
+                            repository.getScreen().getScreenWidth(),
+                            repository.getScreen().getScreenHeight(),
+                            repository.getBallsImages().getImgScattered(),
+                            !repository.isRoam());
                 }
                 if (e.getWheelRotation() > 0) {
                     //** Changing a figure of a destination balls
-                    oRepository.getBalls().setScatterMode(
-                            oRepository.getBalls().getScatterMode() - 1
+                    repository.getBalls().setScatterMode(
+                            repository.getBalls().getScatterMode() - 1
                     );
-                    if (oRepository.getBalls().getScatterMode() < 0) {
-                        oRepository.getBalls().setScatterMode(24);
+                    if (repository.getBalls().getScatterMode() < 0) {
+                        repository.getBalls().setScatterMode(24);
                     }
-                    oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsDestination(),
+                    repository.getBalls().scatterTheBalls(
+                            repository.getBalls().getBallsDestination(),
                             0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
+                            repository.getScreen().getScreenWidth(),
+                            repository.getScreen().getScreenHeight(),
+                            repository.getBallsImages().getImgScattered(),
+                            !repository.isRoam());
                 }
             } //** When there is some scattered ball selected
             else {
                 //** Changing a pattern of a scattered balls spreading
                 if (e.getWheelRotation() < 0) {
-                    oRepository.getBalls().setScatterMode(
-                            oRepository.getBalls().getScatterMode() + 1
+                    repository.getBalls().setScatterMode(
+                            repository.getBalls().getScatterMode() + 1
                     );
-                    if (oRepository.getBalls().getScatterMode() > 25) {
-                        oRepository.getBalls().setScatterMode(0);
+                    if (repository.getBalls().getScatterMode() > 25) {
+                        repository.getBalls().setScatterMode(0);
                     }
                 }
                 if (e.getWheelRotation() > 0) {
-                    oRepository.getBalls().setScatterMode(
-                            oRepository.getBalls().getScatterMode() - 1
+                    repository.getBalls().setScatterMode(
+                            repository.getBalls().getScatterMode() - 1
                     );
-                    if (oRepository.getBalls().getScatterMode() < 0) {
-                        oRepository.getBalls().setScatterMode(25);
+                    if (repository.getBalls().getScatterMode() < 0) {
+                        repository.getBalls().setScatterMode(25);
                     }
                 }
-                oRepository.getBalls().scatterTheBalls(
-                            oRepository.getBalls().getBallsScattered(),
+                repository.getBalls().scatterTheBalls(
+                            repository.getBalls().getBallsScattered(),
                             0,
-                            oRepository.getScreenWidth(), 
-                            oRepository.getScreenHeight(), 
-                            oRepository.getBallsImages().getImgScattered(),
-                            !oRepository.isRoam());
+                            repository.getScreen().getScreenWidth(),
+                            repository.getScreen().getScreenHeight(),
+                            repository.getBallsImages().getImgScattered(),
+                            !repository.isRoam());
             }
-            oRepository.getBalls().computeMetaData(true);
+            repository.getBalls().computeMetaData(true);
         }
 //</editor-fold>
         
@@ -236,32 +193,32 @@ public class FrameMouseWheelListener implements MouseWheelListener {
          * checking at least one ball's image), make them to have scattered 
          * images (look) back again.
          */
-        if (oRepository.getTmrAfterConvergence().isRunning()) {
+        if (repository.getTmrAfterConvergence().isRunning()) {
             //** Stopping this timer
-            oRepository.getTmrAfterConvergence().stop();
-            oRepository.getTmrRendering().start();
-            oRepository.getoLogic().setScatteredBallsLook(
-                    oRepository.getBalls().getBallsScattered(),
-                    oRepository.getBallsImages().getImgScattered());
+            repository.getTmrAfterConvergence().stop();
+            repository.getTmrRendering().start();
+            repository.getoLogic().setScatteredBallsLook(
+                    repository.getBalls().getBallsScattered(),
+                    repository.getBallsImages().getImgScattered());
             //** Changing an image of a selected ball to be back, yellow
-            oRepository.getBalls().getBallSelected().setImage(
-                oRepository.getBallsImages().getImgSelected());
+            repository.getBalls().getBallSelected().setImage(
+                repository.getBallsImages().getImgSelected());
             /**
              * Setting an image for a RenderButton to be Start, for a 
              * convergence could run consequently.
              */
-            oRepository.setImgRenderButton(
-                    new ImageIcon(oRepository.getStrImgStartInitial()));
+            repository.setImgRenderButton(
+                    new ImageIcon(repository.getStrImgStartInitial()));
             //** Assigning an image to a renderButton 
-            oRepository.getLblRenderButton().setIcon(
-                                oRepository.getImgRenderButton());
+            repository.getLblRenderButton().setIcon(
+                                repository.getImgRenderButton());
         }
         
-//        System.out.println(oRepository.getTmrRendering().isRunning());
+//        System.out.println(repository.getTmrRendering().isRunning());
 
         //** Computing metadata, only in case a "convergence" process is running
-        oRepository.getBalls().computeMetaData(
-                !oRepository.isRoam());
-//        oRepository.getBalls().printMetaData();
+        repository.getBalls().computeMetaData(
+                !repository.isRoam());
+//        repository.getBalls().printMetaData();
     }
 }

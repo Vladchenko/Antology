@@ -59,8 +59,8 @@ public class LabelMouseListener implements MouseListener {
             oRepository.getBalls().scatterTheBalls(
                     oRepository.getBalls().getBallsScattered(),
                     Math.PI,
-                    oRepository.getScreenWidth(),
-                    oRepository.getScreenHeight(),
+                    oRepository.getScreen().getScreenWidth(),
+                    oRepository.getScreen().getScreenHeight(),
                 oRepository.getBallsImages().getImgScattered(), false);
             
             //** Recomputing metadata

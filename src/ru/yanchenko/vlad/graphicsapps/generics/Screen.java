@@ -35,32 +35,8 @@ public class Screen {
         clrWindowBackground = COLOR_SCREEN_BACKGROUND;
         frame = new JFrame();
         screenCenter = new Point();
-        // TODO Make a renderButton first.
         renderButton = new RenderButton();
 //                JLabel(imgRenderButton);
-    }
-    //** Initializing a JFrame
-    private void initializeScreen(Rendering rendering) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenCenter.x = (int) screenSize.getWidth() / 2;
-        screenCenter.y = (int) screenSize.getWidth() / 2;
-        screenWidth = (int) screenSize.getWidth();
-        screenHeight = (int) screenSize.getHeight();
-        screenSize = null;
-
-        frame.setSize(screenWidth, screenHeight);
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(rendering);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        frame.setBackground(clrWindowBackground);
-        frame.setVisible(true);
-        frame.requestFocus();
-        if (!windowFrame) {
-            frame.setUndecorated(true);
-        }
-        addListeners(frame);
-        rendering.setBackground(clrWindowBackground);
     }
 
     //** Adding a listeners to a frame
@@ -71,18 +47,46 @@ public class Screen {
         frame.addMouseWheelListener(new FrameMouseWheelListener());
     }
 
+    //** Initializing a JFrame
+    private void initializeScreen(Rendering rendering) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = (int) screenSize.getWidth();
+        screenHeight = (int) screenSize.getHeight();
+        screenCenter.x = (int) screenSize.getWidth() / 2;
+        screenCenter.y = (int) screenSize.getWidth() / 2;
+        screenSize = null;
+        if (!windowFrame) {
+            frame.setUndecorated(true);
+        }
+        frame.setSize(screenWidth, screenHeight);
+        frame.setLocationRelativeTo(null);
+        frame.setContentPane(rendering);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+//        frame.setBackground(clrWindowBackground);
+        frame.setVisible(true);
+        frame.requestFocus();
+
+        addListeners(frame);
+//        rendering.setBackground(clrWindowBackground);
+        rendering.setOpaque(true);
+    }
+
     private void initializeScreenComponents() {
         fps.setFPSLabelDefaultPosition(frame);
         fps.getLabel().setForeground(fps.getColor());
-        frame.add(fps.getLabel());
-        frame.add(renderButton.getView());
         renderButton.getView().setSize(renderButton.getImage().getIconWidth(),
                 renderButton.getImage().getIconHeight());
         renderButton.getView().addMouseListener(new LabelMouseListener());
     }
 
+    private void addComponentsToScreen() {
+        frame.add(fps.getLabel());
+        frame.add(renderButton.getView());
+    }
+
     //** Initializing some data - images, frame, adding listeners.
-//    private void initializeData() {
+    public void initializeData(Rendering rendering) {
 //
 //        this.initializeScreen(oFrmDrawingBoard);
 //
@@ -92,6 +96,25 @@ public class Screen {
 //        oRendering.setBackground(
 //                oRepository.getClrWindowBackground()
 //        );
-//    }
+        initializeScreen(rendering);
+        initializeScreenComponents();
+        addComponentsToScreen();
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public void setScreenWidth(int screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public void setScreenHeight(int screenHeight) {
+        this.screenHeight = screenHeight;
+    }
 
 }

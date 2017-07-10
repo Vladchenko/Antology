@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import ru.yanchenko.vlad.graphicsapps.Repository;
-import ru.yanchenko.vlad.graphicsapps.generics.BallsMetaData;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.BallsMetaData;
 
 /**
  *

@@ -11,9 +11,10 @@ import javax.swing.Timer;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import ru.yanchenko.vlad.graphicsapps.generics.Balls;
-import ru.yanchenko.vlad.graphicsapps.generics.BallsImages;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.Balls;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.BallsImages;
 import ru.yanchenko.vlad.graphicsapps.generics.FPS;
+import ru.yanchenko.vlad.graphicsapps.generics.Screen;
 import ru.yanchenko.vlad.graphicsapps.listeners.FrameKeyListener;
 import ru.yanchenko.vlad.graphicsapps.listeners.FrameMouseListener;
 import ru.yanchenko.vlad.graphicsapps.listeners.FrameMouseMotionListener;
@@ -41,14 +42,15 @@ public class Repository {
      * When full screen is off, then following fields stand for a size of a
      * window
      */
-    private int ScreenWidth = 1200;
-    private int ScreenHeight = 800;
+//    private int ScreenWidth = 1200;
+//    private int ScreenHeight = 800;
     private Color clrWindowBackground = new Color(0, 0, 0);
     private FPS fps = new FPS();
-    private static Repository oRepository;
+    private static Repository repository;
     private static frmDrawingBoard oFrmDrawingBoard;
-    private static Logic oLogic;
-    private static Rendering oRendering;
+    private static Logic logic;
+    private static Rendering rendering;
+    private Screen screen = new Screen();
 //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="User related fields">
@@ -118,18 +120,32 @@ public class Repository {
     //** Retrieving an object of a Repository
     public static Repository getInstance() {
 
-        if (oRepository == null) {
+        if (repository == null) {
 
-            oRepository = new Repository();
-            Repository.oLogic = new Logic();
-            Repository.oRendering = new Rendering();
-            Repository.oFrmDrawingBoard = oRepository.new frmDrawingBoard();
+            repository = new Repository();
+            Repository.logic = new Logic();
+            Repository.rendering = new Rendering();
+            // Required here, unless the color is not set.
+            rendering.setBackground(Color.BLACK);
+//            screen = new Screen();
+//            screen.initializeData(rendering);
+//
+//            Repository.oFrmDrawingBoard = repository.new frmDrawingBoard();
 
-            oRepository.initializeData();
+//            repository.initializeData();
 
         }
-        return oRepository;
+        return repository;
 
+    }
+
+    public Repository() {
+//        Repository.logic = new Logic();
+//        Repository.rendering = new Rendering();
+        // Required here, unless the color is not set.
+        rendering.setBackground(Color.BLACK);
+//            screen = new Screen();
+        screen.initializeData(rendering);
     }
 
     //** Adding a listeneres to a frame
@@ -163,25 +179,25 @@ public class Repository {
 
     //** Initializing a JFrame
     private void initializeFrame(JFrame frame) {
-        frame.setSize(oRepository.getScreenWidth(),
-                oRepository.getScreenHeight());
+//        frame.setSize(repository.getScreenWidth(),
+//                repository.getScreenHeight());
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(oRepository.getoDrawing());
+        frame.setContentPane(repository.getoDrawing());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        if (!oRepository.isWindowFrame()) {
+        if (!repository.isWindowFrame()) {
             frame.setUndecorated(true);
         }
         frame.setLayout(null);
         fps.setFPSLabelDefaultPosition(frame);
         fps.getLabel().setForeground(fps.getColor());
         frame.add(fps.getLabel());
-        frame.add(oRepository.getLblRenderButton());
+        frame.add(repository.getLblRenderButton());
 
         this.lblRenderButton.setSize(
                 this.imgRenderButton.getIconWidth(),
                 this.imgRenderButton.getIconHeight());
         this.lblRenderButton.addMouseListener(new LabelMouseListener());
-        frame.setBackground(oRepository.getClrWindowBackground());
+        frame.setBackground(repository.getClrWindowBackground());
         frame.setVisible(true);
         this.addListeners(oFrmDrawingBoard);
         frame.requestFocus();
@@ -191,15 +207,15 @@ public class Repository {
     private void initializeData() {
 
         //** Put an initialization code here */
-        if (oRepository.isFullScreen()) {
+        if (repository.isFullScreen()) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            oRepository.pntScreenCenter.x = (int) screenSize.getWidth() / 2;
-            oRepository.pntScreenCenter.y = (int) screenSize.getWidth() / 2;
-            oRepository.setScreenWidth((int) screenSize.getWidth());
-            oRepository.setScreenHeight((int) screenSize.getHeight());
+            repository.pntScreenCenter.x = (int) screenSize.getWidth() / 2;
+            repository.pntScreenCenter.y = (int) screenSize.getWidth() / 2;
+//            repository.setScreenWidth((int) screenSize.getWidth());
+//            repository.setScreenHeight((int) screenSize.getHeight());
         } else {
-            oRepository.pntScreenCenter.x = oRepository.getScreenWidth() / 2;
-            oRepository.pntScreenCenter.y = oRepository.getScreenHeight() / 2;
+//            repository.pntScreenCenter.x = repository.getScreenWidth() / 2;
+//            repository.pntScreenCenter.y = repository.getScreenHeight() / 2;
         }
 
         //<editor-fold defaultstate="collapsed" desc="Images instantiating">
@@ -235,10 +251,10 @@ public class Repository {
         this.initializeFrame(oFrmDrawingBoard);
 
         this.populateStringMap(getMapStrImages());
-//        oRepository.getoFrmDrawingBoard().setBackground(oRepository.getClrWindowBackground());
+//        repository.getoFrmDrawingBoard().setBackground(repository.getClrWindowBackground());
 
-        oRendering.setBackground(
-                oRepository.getClrWindowBackground()
+        rendering.setBackground(
+                repository.getClrWindowBackground()
         );
     }
 
@@ -507,19 +523,19 @@ public class Repository {
     }
 
     public Logic getoLogic() {
-        return oLogic;
+        return logic;
     }
 
     public void setoLogic(Logic oLogic) {
-        this.oLogic = oLogic;
+        this.logic = oLogic;
     }
 
     public Rendering getoDrawing() {
-        return oRendering;
+        return rendering;
     }
 
     public void setoDrawing(Rendering oRendering) {
-        this.oRendering = oRendering;
+        this.rendering = oRendering;
     }
 
     public Point getPntScreenCenter() {
@@ -539,11 +555,11 @@ public class Repository {
     }
 
     public static Repository getRepository() {
-        return oRepository;
+        return repository;
     }
 
     public static void setRepository(Repository Repository) {
-        Repository.oRepository = Repository;
+        Repository.repository = Repository;
     }
 
     public boolean isFullScreen() {
@@ -561,22 +577,22 @@ public class Repository {
     public void setWindowFrame(boolean windowFrame) {
         this.windowFrame = windowFrame;
     }
-
-    public int getScreenWidth() {
-        return ScreenWidth;
-    }
-
-    public void setScreenWidth(int ScreenWidth) {
-        this.ScreenWidth = ScreenWidth;
-    }
-
-    public int getScreenHeight() {
-        return ScreenHeight;
-    }
-
-    public void setScreenHeight(int ScreenHeight) {
-        this.ScreenHeight = ScreenHeight;
-    }
+//
+//    public int getScreenWidth() {
+//        return ScreenWidth;
+//    }
+//
+//    public void setScreenWidth(int ScreenWidth) {
+//        this.ScreenWidth = ScreenWidth;
+//    }
+//
+//    public int getScreenHeight() {
+//        return ScreenHeight;
+//    }
+//
+//    public void setScreenHeight(int ScreenHeight) {
+//        this.ScreenHeight = ScreenHeight;
+//    }
 
     public frmDrawingBoard getoFrmDrawingBoard() {
         return Repository.oFrmDrawingBoard;
@@ -625,5 +641,14 @@ public class Repository {
     public void setFps(FPS fps) {
         this.fps = fps;
     }
+
+    public Screen getScreen() {
+        return screen;
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
 //</editor-fold>    
 }
