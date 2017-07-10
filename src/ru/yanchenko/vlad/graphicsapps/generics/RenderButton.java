@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by Влад on 07.07.2017.
  */
 public class RenderButton {
+
     //** Strings that stand for a paths where an images of a render button reside
     private String strImgStartInitial = "pics/RenderButton/Start_Initial.png";
     private String strImgStartHovered = "pics/RenderButton/Start_Hovered.png";
@@ -23,8 +24,10 @@ public class RenderButton {
     private String strImgInitInitial = "pics/RenderButton/Init_Initial.png";
     private String strImgInitHovered = "pics/RenderButton/Init_Hovered.png";
     private String strImgInitPressed = "pics/RenderButton/Init_Pressed.png";
-    // Mapping images names to their paths.
+
+    // Mapping images' names to their paths.
     private Map<String, String> mapStrImages = new HashMap();
+
     //** Image shown on a JLabel with a default text ("Start").
     private ImageIcon image = new ImageIcon(strImgStartInitial);
     //** In charge of running / stopping / continuing convergence.
@@ -160,5 +163,13 @@ public class RenderButton {
 
     public void setView(JLabel view) {
         this.view = view;
+    }
+
+    public ImageIcon getImage() {
+        return image;
+    }
+
+    public void setImage(ImageIcon image) {
+        this.image = image;
     }
 }

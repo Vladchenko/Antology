@@ -19,8 +19,6 @@ public class Screen {
     private Color clrWindowBackground;
     // Used to incorporate a JPanel, on which to draw a graphics on.
     private JFrame frame;
-//    //** Field used to find out a size of a screen
-//    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     //** Width of a screen
     private int screenWidth;
     //** Height of a screen
@@ -32,7 +30,6 @@ public class Screen {
     private FPS fps = new FPS();
     //** In charge of running / stopping / continuing convergence.
     private RenderButton renderButton;
-//    private JLabel renderButton;
 
     public Screen() {
         clrWindowBackground = COLOR_SCREEN_BACKGROUND;
@@ -50,21 +47,23 @@ public class Screen {
         screenWidth = (int) screenSize.getWidth();
         screenHeight = (int) screenSize.getHeight();
         screenSize = null;
+
         frame.setSize(screenWidth, screenHeight);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(rendering);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        if (!windowFrame) {
-            frame.setUndecorated(true);
-        }
         frame.setLayout(null);
         frame.setBackground(clrWindowBackground);
         frame.setVisible(true);
-        addListeners(frame);
         frame.requestFocus();
+        if (!windowFrame) {
+            frame.setUndecorated(true);
+        }
+        addListeners(frame);
+        rendering.setBackground(clrWindowBackground);
     }
 
-    //** Adding a listeneres to a frame
+    //** Adding a listeners to a frame
     private void addListeners(JFrame frame) {
         frame.addKeyListener(new FrameKeyListener());
         frame.addMouseListener(new FrameMouseListener());
@@ -76,66 +75,23 @@ public class Screen {
         fps.setFPSLabelDefaultPosition(frame);
         fps.getLabel().setForeground(fps.getColor());
         frame.add(fps.getLabel());
-        frame.add(oRepository.getLblRenderButton());
-        this.renderButton.setSize(
-                this.imgRenderButton.getIconWidth(),
-                this.imgRenderButton.getIconHeight());
-        this.renderButton.addMouseListener(new LabelMouseListener());
+        frame.add(renderButton.getView());
+        renderButton.getView().setSize(renderButton.getImage().getIconWidth(),
+                renderButton.getImage().getIconHeight());
+        renderButton.getView().addMouseListener(new LabelMouseListener());
     }
 
     //** Initializing some data - images, frame, adding listeners.
-    private void initializeData() {
-
-        //** Put an initialization code here */
-        if (oRepository.isFullScreen()) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            oRepository.pntScreenCenter.x = (int) screenSize.getWidth() / 2;
-            oRepository.pntScreenCenter.y = (int) screenSize.getWidth() / 2;
-            oRepository.setScreenWidth((int) screenSize.getWidth());
-            oRepository.setScreenHeight((int) screenSize.getHeight());
-        } else {
-            oRepository.pntScreenCenter.x = oRepository.getScreenWidth() / 2;
-            oRepository.pntScreenCenter.y = oRepository.getScreenHeight() / 2;
-        }
-
-        //<editor-fold defaultstate="collapsed" desc="Images instantiating">
-//        try {
-//            fileImg = new File(strImgCircluar);
-//            imgDestination = ImageIO.read(fileImg);
-//        } catch (Exception ie) {
-//            System.out.println("Error: " + ie.getMessage());
-//        }
+//    private void initializeData() {
 //
-//        try {
-//            fileImg = new File(strImgRandom);
-//            imgScattered = ImageIO.read(fileImg);
-//        } catch (Exception ie) {
-//            System.out.println("Error: " + ie.getMessage());
-//        }
+//        this.initializeScreen(oFrmDrawingBoard);
 //
-//        try {
-//            fileImg = new File(strImgConverged);
-//            imgConverged = ImageIO.read(fileImg);
-//        } catch (Exception ie) {
-//            System.out.println("Error: " + ie.getMessage());
-//        }
+//        this.populateStringMap(getMapStrImages());
+////        oRepository.getoFrmDrawingBoard().setBackground(oRepository.getClrWindowBackground());
 //
-//        try {
-//            fileImg = new File(strImgSelected);
-//            imgSelected = ImageIO.read(fileImg);
-//        } catch (Exception ie) {
-//            System.out.println("Error: " + ie.getMessage());
-//        }
-        //</editor-fold>
-
-        this.initializeScreen(oFrmDrawingBoard);
-
-        this.populateStringMap(getMapStrImages());
-//        oRepository.getoFrmDrawingBoard().setBackground(oRepository.getClrWindowBackground());
-
-        oRendering.setBackground(
-                oRepository.getClrWindowBackground()
-        );
-    }
+//        oRendering.setBackground(
+//                oRepository.getClrWindowBackground()
+//        );
+//    }
 
 }
