@@ -8,9 +8,9 @@ package ru.yanchenko.vlad.graphicsapps.listeners;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.ImageIcon;
-import ru.yanchenko.vlad.graphicsapps.Repository;
 import ru.yanchenko.vlad.graphicsapps.generics.Keyboard;
-import ru.yanchenko.vlad.graphicsapps.generics.balls.BallsLogic;
+import ru.yanchenko.vlad.graphicsapps.generics.balls.Balls;
+import ru.yanchenko.vlad.graphicsapps.logic.Geometry;
 
 /**
  *
@@ -18,173 +18,180 @@ import ru.yanchenko.vlad.graphicsapps.generics.balls.BallsLogic;
  */
 public class FrameMouseWheelListener implements MouseWheelListener {
 
-    private Repository repository = Repository.getInstance();
+//    private Repository repository = Repository.getInstance();
+    private int screenWidth;
+    private int screenHeight;
     private Keyboard keyboard;
-    private BallsLogic ballsLogic;
+    private Balls balls;
 
-    public FrameMouseWheelListener() {
-        keyboard = new Keyboard();
+    public FrameMouseWheelListener(Balls balls, Keyboard keyboard, int screenWidth, int screenHeight) {
+        this.keyboard = keyboard;
+        this.balls = balls;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
         //<editor-fold defaultstate="collapsed" desc="When no ALT / CTRL / SHIFT keys pressed">
-        if (!repository.isKeyAlt()
-                && !repository.isKeyCtrl()
-                && !repository.isKeyShift()) {
+        if (!keyboard.isAltPressed()
+                && !keyboard.isCtrlPressed()
+                && !keyboard.isShiftPressed()) {
 
             /**
              * This operation rotates a scattered balls around a selected one.
              */
-            ballsLogic.rotateBallsAroundOne(e.getWheelRotation(),
-                    repository.getScreen().getScreenWidth(),
-                    repository.getScreen().getScreenHeight());
+            balls.getBallsLogic().rotateBallsAroundOne(balls, e.getWheelRotation(),
+                    screenWidth,
+                    screenHeight);
         }
         //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="When CTRL is pressed">
-        if (repository.isKeyCtrl()) {
+        if (keyboard.isCtrlPressed()) {
 
             //** When there is no any scattered ball selected
-            if (repository.getBalls().getBallSelected().equals(
-                    repository.getBalls().getBallDummy())) {
+            if (balls.getBallSelected().equals(
+                    balls.getBallDummy())) {
 
                 if (e.getWheelRotation() < 0) {
                     
                     //** Increasing a size of a destination balls figure
-                    repository.getBalls().setRadius(
-                            repository.getBalls().getRadius() + 15);
-                    repository.getBalls().setRadiusFloating(
-                            repository.getBalls().getRadiusFloating() + 3);
-                    repository.getBalls().scatterTheBalls(
-                            repository.getBalls().getBallsDestination(),
+                    balls.setRadius(
+                            balls.getRadius() + 15);
+                    balls.setRadiusFloating(
+                            balls.getRadiusFloating() + 3);
+                    // Rescattering a balls respectively to a current figure
+                    balls.scatterTheBalls(
+                            balls.getBallsDestination(),
                             0,
-                            repository.getScreen().getScreenWidth(),
-                            repository.getScreen().getScreenHeight(),
-                            repository.getBallsImages().getImgScattered(),
-                            !repository.isRoam());
+                            screenWidth,
+                            screenHeight,
+                            balls.getBallsImages().getImgScattered(),
+                            !balls.isRoam());
                 }
 
                 if (e.getWheelRotation() > 0) {
                     //** Decreasing a size of a destination balls figure
-                    repository.getBalls().setRadius(
-                            repository.getBalls().getRadius() - 15);
-                    repository.getBalls().setRadiusFloating(
-                            repository.getBalls().getRadiusFloating() - 3);
-                    repository.getBalls().scatterTheBalls(
-                            repository.getBalls().getBallsDestination(),
+                    balls.setRadius(
+                            balls.getRadius() - 15);
+                    balls.setRadiusFloating(
+                            balls.getRadiusFloating() - 3);
+                    // Rescattering a balls respectively to a current figure
+                    balls.scatterTheBalls(
+                            balls.getBallsDestination(),
                             0,
-                            repository.getScreen().getScreenWidth(),
-                            repository.getScreen().getScreenHeight(),
-                            repository.getBallsImages().getImgScattered(),
-                            !repository.isRoam());
+                            screenWidth,
+                            screenHeight,
+                            balls.getBallsImages().getImgScattered(),
+                            !balls.isRoam());
                 }
                 //** When there is some ball selected
             } else {
                 if (e.getWheelRotation() < 0) {
-                    repository.getoLogic().computePolarCoors(
-                            repository.getBalls());
-                    repository.getBalls().setAngle(0);
-                    for (int i = 0; i < repository.getBalls().
+                    Geometry.computePolarCoors(
+                            balls);
+                    balls.setAngle(0);
+                    for (int i = 0; i < balls.
                             getBallsMetaData().length; i++) {
-                        repository.getBalls().getBallsMetaData()[i].setRadius(
-                                repository.getBalls().
+                        balls.getBallsMetaData()[i].setRadius(
+                                balls.
                                 getBallsMetaData()[i].getRadius()
-                                + repository.getBalls().
+                                + balls.
                                 getBallsMetaData()[i].getRadius() / 20);
 
                     }
-                    repository.getoLogic().computeDekartCoors(
-                            repository.getBalls());
+                    Geometry.computeDekartCoors(
+                            balls);
                 }
                 if (e.getWheelRotation() > 0) {
-                    repository.getoLogic().computePolarCoors(
-                            repository.getBalls());
-                    repository.getBalls().setAngle(0);
-                    for (int i = 0; i < repository.getBalls().
+                    Geometry.computePolarCoors(
+                            balls);
+                    balls.setAngle(0);
+                    for (int i = 0; i < balls.
                             getBallsMetaData().length; i++) {
-                        repository.getBalls().getBallsMetaData()[i].setRadius(
-                                repository.getBalls().
+                        balls.getBallsMetaData()[i].setRadius(
+                                balls.
                                 getBallsMetaData()[i].getRadius()
-                                - repository.getBalls().
+                                - balls.
                                 getBallsMetaData()[i].getRadius() / 20);
 
                     }
-                    repository.getoLogic().computeDekartCoors(
-                            repository.getBalls());
+                    Geometry.computeDekartCoors(
+                            balls);
                 }
             }
         }
 //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="When SHIFT is pressed">
-        if (repository.isKeyShift()) {
+        if (keyboard.isShiftPressed()) {
 
             //** When there is no any scattered ball selected
-            if (repository.getBalls().getBallSelected().equals(
-                    repository.getBalls().getBallDummy())) {
+            if (balls.getBallSelected().equals(
+                    balls.getBallDummy())) {
 
                 if (e.getWheelRotation() < 0) {
                     //** Changing a figure of a destination balls
-                    repository.getBalls().setScatterMode(
-                            repository.getBalls().getScatterMode() + 1
+                    balls.setScatterMode(
+                            balls.getScatterMode() + 1
                     );
-                    if (repository.getBalls().getScatterMode() > 24) {
-                        repository.getBalls().setScatterMode(0);
+                    if (balls.getScatterMode() > 24) {
+                        balls.setScatterMode(0);
                     }
-                    repository.getBalls().scatterTheBalls(
-                            repository.getBalls().getBallsDestination(),
+                    balls.scatterTheBalls(
+                            balls.getBallsDestination(),
                             0,
-                            repository.getScreen().getScreenWidth(),
-                            repository.getScreen().getScreenHeight(),
-                            repository.getBallsImages().getImgScattered(),
-                            !repository.isRoam());
+                            screenWidth,
+                            screenHeight,
+                            balls.getBallsImages().getImgScattered(),
+                            !balls.isRoam());
                 }
                 if (e.getWheelRotation() > 0) {
                     //** Changing a figure of a destination balls
-                    repository.getBalls().setScatterMode(
-                            repository.getBalls().getScatterMode() - 1
+                    balls.setScatterMode(
+                            balls.getScatterMode() - 1
                     );
-                    if (repository.getBalls().getScatterMode() < 0) {
-                        repository.getBalls().setScatterMode(24);
+                    if (balls.getScatterMode() < 0) {
+                        balls.setScatterMode(24);
                     }
-                    repository.getBalls().scatterTheBalls(
-                            repository.getBalls().getBallsDestination(),
+                    balls.scatterTheBalls(
+                            balls.getBallsDestination(),
                             0,
-                            repository.getScreen().getScreenWidth(),
-                            repository.getScreen().getScreenHeight(),
-                            repository.getBallsImages().getImgScattered(),
-                            !repository.isRoam());
+                            screenWidth,
+                            screenHeight,
+                            balls.getBallsImages().getImgScattered(),
+                            !balls.isRoam());
                 }
             } //** When there is some scattered ball selected
             else {
                 //** Changing a pattern of a scattered balls spreading
                 if (e.getWheelRotation() < 0) {
-                    repository.getBalls().setScatterMode(
-                            repository.getBalls().getScatterMode() + 1
+                    balls.setScatterMode(
+                            balls.getScatterMode() + 1
                     );
-                    if (repository.getBalls().getScatterMode() > 25) {
-                        repository.getBalls().setScatterMode(0);
+                    if (balls.getScatterMode() > 25) {
+                        balls.setScatterMode(0);
                     }
                 }
                 if (e.getWheelRotation() > 0) {
-                    repository.getBalls().setScatterMode(
-                            repository.getBalls().getScatterMode() - 1
+                    balls.setScatterMode(
+                            balls.getScatterMode() - 1
                     );
-                    if (repository.getBalls().getScatterMode() < 0) {
-                        repository.getBalls().setScatterMode(25);
+                    if (balls.getScatterMode() < 0) {
+                        balls.setScatterMode(25);
                     }
                 }
-                repository.getBalls().scatterTheBalls(
-                            repository.getBalls().getBallsScattered(),
+                balls.scatterTheBalls(
+                            balls.getBallsScattered(),
                             0,
-                            repository.getScreen().getScreenWidth(),
-                            repository.getScreen().getScreenHeight(),
-                            repository.getBallsImages().getImgScattered(),
-                            !repository.isRoam());
+                            screenWidth,
+                            screenHeight,
+                            balls.getBallsImages().getImgScattered(),
+                            !balls.isRoam());
             }
-            repository.getBalls().computeMetaData(true);
+            balls.computeMetaData(true);
         }
 //</editor-fold>
         
@@ -197,17 +204,17 @@ public class FrameMouseWheelListener implements MouseWheelListener {
             //** Stopping this timer
             repository.getTmrAfterConvergence().stop();
             repository.getTmrRendering().start();
-            repository.getoLogic().setScatteredBallsLook(
-                    repository.getBalls().getBallsScattered(),
-                    repository.getBallsImages().getImgScattered());
+            balls.getBallsLogic().setScatteredBallsLook(
+                    balls.getBallsScattered(),
+                    balls.getBallsImages().getImgScattered());
             //** Changing an image of a selected ball to be back, yellow
-            repository.getBalls().getBallSelected().setImage(
-                repository.getBallsImages().getImgSelected());
+            balls.getBallSelected().setImage(
+                balls.getBallsImages().getImgSelected());
             /**
              * Setting an image for a RenderButton to be Start, for a 
              * convergence could run consequently.
              */
-            repository.setImgRenderButton(
+            .setImgRenderButton(
                     new ImageIcon(repository.getStrImgStartInitial()));
             //** Assigning an image to a renderButton 
             repository.getLblRenderButton().setIcon(
@@ -217,8 +224,8 @@ public class FrameMouseWheelListener implements MouseWheelListener {
 //        System.out.println(repository.getTmrRendering().isRunning());
 
         //** Computing metadata, only in case a "convergence" process is running
-        repository.getBalls().computeMetaData(
-                !repository.isRoam());
-//        repository.getBalls().printMetaData();
+        balls.computeMetaData(
+                !balls.isRoam());
+//        balls.printMetaData();
     }
 }

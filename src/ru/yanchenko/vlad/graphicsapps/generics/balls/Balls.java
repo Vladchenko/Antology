@@ -53,12 +53,11 @@ public class Balls {
     //** This is a field that holds a scattered balls and methods to operate with.
     private BallMoved[] ballsScattered;
     private BallsMetaData[] ballsMetaData;
+    private BallsLogic ballsLogic;
+    private BallsImages ballsImages;
     //</editor-fold>
 
-    public Balls(int screenWidth,
-            int screenHeight,
-            int number,
-            BallsImages ballsImages) {
+    public Balls(BallsLogic ballsLogic, BallsImages ballsImages, int screenWidth, int screenHeight, int number) {
         /**
          * Dummy ball is always located at the end (right low corner) of a screen, for it could not
          * be seen.
@@ -73,6 +72,8 @@ public class Balls {
         ballsDestination = new Ball[number];
         ballsScattered = new BallMoved[number];
         ballsMetaData = new BallsMetaData[number];
+        this.ballsLogic = ballsLogic;
+        this.ballsImages = ballsImages;
         for (int i = 0; i < number; i++) {
             //** Instantiating a meta data for balls
             ballsMetaData[i] = new BallsMetaData();
@@ -627,6 +628,22 @@ public class Balls {
 //    }
 
     //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
+
+    public BallsImages getBallsImages() {
+        return ballsImages;
+    }
+
+    public void setBallsImages(BallsImages ballsImages) {
+        this.ballsImages = ballsImages;
+    }
+
+    public BallsLogic getBallsLogic() {
+        return ballsLogic;
+    }
+
+    public void setBallsLogic(BallsLogic ballsLogic) {
+        this.ballsLogic = ballsLogic;
+    }
 
     public boolean isRoam() {
         return roam;
