@@ -509,6 +509,148 @@ public class BallsLogic {
         balls.computeMetaData(converge);
     }
 
+    public void changeSizeAndRescatterWhenMouseWheelMoved(Balls balls, int rotationValue, int screenWidth, int screenHeight) {
+
+        //** When there is no any scattered ball selected
+        if (balls.getBallSelected().equals(
+                balls.getBallDummy())) {
+
+            if (rotationValue < 0) {
+
+                //** Increasing a size of a destination balls figure
+                balls.setRadius(
+                        balls.getRadius() + 15);
+                balls.setRadiusFloating(
+                        balls.getRadiusFloating() + 3);
+                // Rescattering a balls respectively to a current figure
+                balls.scatterTheBalls(
+                        balls.getBallsDestination(),
+                        0,
+                        screenWidth,
+                        screenHeight,
+                        balls.getBallsImages().getImgScattered(),
+                        !balls.isRoam());
+            }
+
+            if (rotationValue > 0) {
+                //** Decreasing a size of a destination balls figure
+                balls.setRadius(
+                        balls.getRadius() - 15);
+                balls.setRadiusFloating(
+                        balls.getRadiusFloating() - 3);
+                // Rescattering a balls respectively to a current figure
+                balls.scatterTheBalls(
+                        balls.getBallsDestination(),
+                        0,
+                        screenWidth,
+                        screenHeight,
+                        balls.getBallsImages().getImgScattered(),
+                        !balls.isRoam());
+            }
+            //** When there is some ball selected
+        } else {
+            if (rotationValue < 0) {
+                Geometry.computePolarCoors(
+                        balls);
+                balls.setAngle(0);
+                for (int i = 0; i < balls.
+                        getBallsMetaData().length; i++) {
+                    balls.getBallsMetaData()[i].setRadius(
+                            balls.
+                                    getBallsMetaData()[i].getRadius()
+                                    + balls.
+                                    getBallsMetaData()[i].getRadius() / 20);
+
+                }
+                Geometry.computeDekartCoors(
+                        balls);
+            }
+            if (rotationValue > 0) {
+                Geometry.computePolarCoors(
+                        balls);
+                balls.setAngle(0);
+                for (int i = 0; i < balls.
+                        getBallsMetaData().length; i++) {
+                    balls.getBallsMetaData()[i].setRadius(
+                            balls.
+                                    getBallsMetaData()[i].getRadius()
+                                    - balls.
+                                    getBallsMetaData()[i].getRadius() / 20);
+
+                }
+                Geometry.computeDekartCoors(
+                        balls);
+            }
+        }
+    }
+
+    public void rescatterWhenMouseWheelMoved(Balls balls, int rotationValue, int screenWidth, int screenHeight) {
+
+        //** When there is no any scattered ball selected
+        if (balls.getBallSelected().equals(
+                balls.getBallDummy())) {
+
+            if (rotationValue < 0) {
+                //** Changing a figure of a destination balls
+                balls.setScatterMode(
+                        balls.getScatterMode() + 1
+                );
+                if (balls.getScatterMode() > 24) {
+                    balls.setScatterMode(0);
+                }
+                balls.scatterTheBalls(
+                        balls.getBallsDestination(),
+                        0,
+                        screenWidth,
+                        screenHeight,
+                        balls.getBallsImages().getImgScattered(),
+                        !balls.isRoam());
+            }
+            if (rotationValue > 0) {
+                //** Changing a figure of a destination balls
+                balls.setScatterMode(
+                        balls.getScatterMode() - 1
+                );
+                if (balls.getScatterMode() < 0) {
+                    balls.setScatterMode(24);
+                }
+                balls.scatterTheBalls(
+                        balls.getBallsDestination(),
+                        0,
+                        screenWidth,
+                        screenHeight,
+                        balls.getBallsImages().getImgScattered(),
+                        !balls.isRoam());
+            }
+        } //** When there is some scattered ball selected
+        else {
+            //** Changing a pattern of a scattered balls spreading
+            if (rotationValue < 0) {
+                balls.setScatterMode(
+                        balls.getScatterMode() + 1
+                );
+                if (balls.getScatterMode() > 25) {
+                    balls.setScatterMode(0);
+                }
+            }
+            if (rotationValue > 0) {
+                balls.setScatterMode(
+                        balls.getScatterMode() - 1
+                );
+                if (balls.getScatterMode() < 0) {
+                    balls.setScatterMode(25);
+                }
+            }
+            balls.scatterTheBalls(
+                    balls.getBallsScattered(),
+                    0,
+                    screenWidth,
+                    screenHeight,
+                    balls.getBallsImages().getImgScattered(),
+                    !balls.isRoam());
+        }
+        balls.computeMetaData(true);
+    }
 
     //** Setting images for a balls
     public void setScatteredBallsLook(BallMoved[] balls,

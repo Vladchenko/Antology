@@ -10,7 +10,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.ImageIcon;
 import ru.yanchenko.vlad.graphicsapps.generics.Keyboard;
 import ru.yanchenko.vlad.graphicsapps.generics.balls.Balls;
-import ru.yanchenko.vlad.graphicsapps.logic.Geometry;
 
 /**
  *
@@ -50,150 +49,16 @@ public class FrameMouseWheelListener implements MouseWheelListener {
 
         //<editor-fold defaultstate="collapsed" desc="When CTRL is pressed">
         if (keyboard.isCtrlPressed()) {
-
-            //** When there is no any scattered ball selected
-            if (balls.getBallSelected().equals(
-                    balls.getBallDummy())) {
-
-                if (e.getWheelRotation() < 0) {
-                    
-                    //** Increasing a size of a destination balls figure
-                    balls.setRadius(
-                            balls.getRadius() + 15);
-                    balls.setRadiusFloating(
-                            balls.getRadiusFloating() + 3);
-                    // Rescattering a balls respectively to a current figure
-                    balls.scatterTheBalls(
-                            balls.getBallsDestination(),
-                            0,
-                            screenWidth,
-                            screenHeight,
-                            balls.getBallsImages().getImgScattered(),
-                            !balls.isRoam());
-                }
-
-                if (e.getWheelRotation() > 0) {
-                    //** Decreasing a size of a destination balls figure
-                    balls.setRadius(
-                            balls.getRadius() - 15);
-                    balls.setRadiusFloating(
-                            balls.getRadiusFloating() - 3);
-                    // Rescattering a balls respectively to a current figure
-                    balls.scatterTheBalls(
-                            balls.getBallsDestination(),
-                            0,
-                            screenWidth,
-                            screenHeight,
-                            balls.getBallsImages().getImgScattered(),
-                            !balls.isRoam());
-                }
-                //** When there is some ball selected
-            } else {
-                if (e.getWheelRotation() < 0) {
-                    Geometry.computePolarCoors(
-                            balls);
-                    balls.setAngle(0);
-                    for (int i = 0; i < balls.
-                            getBallsMetaData().length; i++) {
-                        balls.getBallsMetaData()[i].setRadius(
-                                balls.
-                                getBallsMetaData()[i].getRadius()
-                                + balls.
-                                getBallsMetaData()[i].getRadius() / 20);
-
-                    }
-                    Geometry.computeDekartCoors(
-                            balls);
-                }
-                if (e.getWheelRotation() > 0) {
-                    Geometry.computePolarCoors(
-                            balls);
-                    balls.setAngle(0);
-                    for (int i = 0; i < balls.
-                            getBallsMetaData().length; i++) {
-                        balls.getBallsMetaData()[i].setRadius(
-                                balls.
-                                getBallsMetaData()[i].getRadius()
-                                - balls.
-                                getBallsMetaData()[i].getRadius() / 20);
-
-                    }
-                    Geometry.computeDekartCoors(
-                            balls);
-                }
-            }
+            balls.getBallsLogic().changeSizeAndRescatterWhenMouseWheelMoved(balls, e.getWheelRotation(), screenWidth,
+                    screenHeight);
         }
-//</editor-fold>
+        //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="When SHIFT is pressed">
         if (keyboard.isShiftPressed()) {
-
-            //** When there is no any scattered ball selected
-            if (balls.getBallSelected().equals(
-                    balls.getBallDummy())) {
-
-                if (e.getWheelRotation() < 0) {
-                    //** Changing a figure of a destination balls
-                    balls.setScatterMode(
-                            balls.getScatterMode() + 1
-                    );
-                    if (balls.getScatterMode() > 24) {
-                        balls.setScatterMode(0);
-                    }
-                    balls.scatterTheBalls(
-                            balls.getBallsDestination(),
-                            0,
-                            screenWidth,
-                            screenHeight,
-                            balls.getBallsImages().getImgScattered(),
-                            !balls.isRoam());
-                }
-                if (e.getWheelRotation() > 0) {
-                    //** Changing a figure of a destination balls
-                    balls.setScatterMode(
-                            balls.getScatterMode() - 1
-                    );
-                    if (balls.getScatterMode() < 0) {
-                        balls.setScatterMode(24);
-                    }
-                    balls.scatterTheBalls(
-                            balls.getBallsDestination(),
-                            0,
-                            screenWidth,
-                            screenHeight,
-                            balls.getBallsImages().getImgScattered(),
-                            !balls.isRoam());
-                }
-            } //** When there is some scattered ball selected
-            else {
-                //** Changing a pattern of a scattered balls spreading
-                if (e.getWheelRotation() < 0) {
-                    balls.setScatterMode(
-                            balls.getScatterMode() + 1
-                    );
-                    if (balls.getScatterMode() > 25) {
-                        balls.setScatterMode(0);
-                    }
-                }
-                if (e.getWheelRotation() > 0) {
-                    balls.setScatterMode(
-                            balls.getScatterMode() - 1
-                    );
-                    if (balls.getScatterMode() < 0) {
-                        balls.setScatterMode(25);
-                    }
-                }
-                balls.scatterTheBalls(
-                            balls.getBallsScattered(),
-                            0,
-                            screenWidth,
-                            screenHeight,
-                            balls.getBallsImages().getImgScattered(),
-                            !balls.isRoam());
-            }
-            balls.computeMetaData(true);
+            balls.getBallsLogic().rescatterWhenMouseWheelMoved(balls, e.getWheelRotation(), screenWidth, screenHeight);
         }
-//</editor-fold>
+        //</editor-fold>
         
         /**
          * If a scattered balls are converged (that could be defined by 
