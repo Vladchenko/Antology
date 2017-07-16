@@ -87,10 +87,10 @@ public class Repository {
      * This field holds a selected ball, dummy ball, destination and 
      * scattered balls, all the required methods to operate with.
      */
-    private Balls balls = new Balls(
-            screenWidth, 
-            screenHeight, 
-            ballsQuantity, getBallsImages());
+//    private Balls balls = new Balls(
+//            screenWidth,
+//            screenHeight,
+//            ballsQuantity, getBallsImages());
     //** Strings that stand for a paths where an images of a render button reside
     private String strImgStartInitial = "pics/RenderButton/Start_Initial.png";
     private String strImgStartHovered = "pics/RenderButton/Start_Hovered.png";
@@ -188,15 +188,11 @@ public class Repository {
             frame.setUndecorated(true);
         }
         frame.setLayout(null);
-        fps.setFPSLabelDefaultPosition(frame);
+        fps.setDefaultPosition(frame);
         fps.getLabel().setForeground(fps.getColor());
         frame.add(fps.getLabel());
         frame.add(repository.getLblRenderButton());
 
-        this.lblRenderButton.setSize(
-                this.imgRenderButton.getIconWidth(),
-                this.imgRenderButton.getIconHeight());
-        this.lblRenderButton.addMouseListener(new LabelMouseListener());
         frame.setBackground(repository.getClrWindowBackground());
         frame.setVisible(true);
         this.addListeners(oFrmDrawingBoard);

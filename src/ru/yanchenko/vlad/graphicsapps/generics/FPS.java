@@ -47,28 +47,23 @@ public class FPS {
 
     /**
      * Setting a position of FPS label on a JFrame, with a specific coordinates.
-     * @param positionByX - x ordinate on a JFrame
-     * @param positionByY - y ordinate on a JFrame
      * @param frame - JFrame on which a FPS label is to be drawn.
      */
-    public void setFPSLabelPosition(int positionByX, int positionByY, JFrame frame) {
+    public void setDefaultPosition(JFrame frame) {
         label.setBounds(
-                frame.getWidth() - width + positionByX,
-                5 + positionByY,
+                frame.getWidth() - width,
+                5,
                 width,
                 height);
     }
 
     /**
-     * Setting a position of FPS label on a JFrame, with a default coordinate. That is an upper right corner.
-     * @param frame - JFrame on which a FPS label is to be drawn.
+     *
+     * @param positionByX
+     * @param positionByY
      */
-    public void setFPSLabelDefaultPosition(JFrame frame) {
-        label.setBounds(
-                frame.getWidth() - width,
-                FPS_LABEL_Y_DEFAULT_ORDINATE,
-                width,
-                height);
+    public void setPosition(int positionByX, int positionByY) {
+        label.setBounds(positionByX, positionByY, width, height);
     }
 
     /**

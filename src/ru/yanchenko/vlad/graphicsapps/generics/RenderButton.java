@@ -1,6 +1,6 @@
 package ru.yanchenko.vlad.graphicsapps.generics;
 
-import ru.yanchenko.vlad.graphicsapps.listeners.LabelMouseListener;
+import ru.yanchenko.vlad.graphicsapps.listeners.RenderButtonMouseListener;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -33,9 +33,10 @@ public class RenderButton {
     //** In charge of running / stopping / continuing convergence.
     private JLabel view = new JLabel(image);
 
-    public RenderButton() {
+    // Making a button to have a default look and behaviour.
+    public void initializeByDefault() {
         view.setSize(image.getIconWidth(), image.getIconHeight());
-        view.addMouseListener(new LabelMouseListener());
+        view.addMouseListener(new RenderButtonMouseListener(this));
         populateImagesToStringsMap(mapStrImages);
         view.setIcon(image);
     }

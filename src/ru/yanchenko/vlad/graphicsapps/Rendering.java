@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 public class Rendering extends JPanel {
 
     private Repository oRepository = Repository.getInstance();
+//    private Color background = new Color(0, 0, 0);
 
     public static synchronized Rendering getInstance(Repository Repository) {
         if (Repository.getoDrawing() == null) {
@@ -16,6 +17,11 @@ public class Rendering extends JPanel {
         }
         return Repository.getoDrawing();
     }
+
+//    public void initializeByDefault() {
+//        // Setting background color
+//        this.setBackground(background);
+//    }
 
     @Override
     public void paintComponent(Graphics g) {

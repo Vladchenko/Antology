@@ -27,16 +27,14 @@ public class Screen {
     private Point screenCenter;
     //** Trigger used to check if a window frame is to be seen.
     private boolean windowFrame;
-    private FPS fps = new FPS();
-    //** In charge of running / stopping / continuing convergence.
-    private RenderButton renderButton;
+    private RenderingComponents renderingComponents;
 
     public Screen() {
         clrWindowBackground = COLOR_SCREEN_BACKGROUND;
         frame = new JFrame();
         screenCenter = new Point();
-        renderButton = new RenderButton();
 //                JLabel(imgRenderButton);
+//        renderingComponents = new RenderingComponents();
     }
 
     //** Adding a listeners to a frame
@@ -47,17 +45,15 @@ public class Screen {
         frame.addMouseWheelListener(new FrameMouseWheelListener());
     }
 
-    //** Initializing a JFrame
-    private void initializeScreen(Rendering rendering) {
+    private void setScreenSizeAndCenter() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         screenWidth = (int) screenSize.getWidth();
         screenHeight = (int) screenSize.getHeight();
         screenCenter.x = (int) screenSize.getWidth() / 2;
         screenCenter.y = (int) screenSize.getWidth() / 2;
-        screenSize = null;
-        if (!windowFrame) {
-            frame.setUndecorated(true);
-        }
+    }
+
+    private void initializeFrame(Rendering rendering) {
         frame.setSize(screenWidth, screenHeight);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(rendering);
@@ -66,23 +62,34 @@ public class Screen {
 //        frame.setBackground(clrWindowBackground);
         frame.setVisible(true);
         frame.requestFocus();
+    }
 
+    //** Initializing a JFrame
+    private void initializeScreen(Rendering rendering) {
+        if (!windowFrame) {
+            frame.setUndecorated(true);
+        }
+        setScreenSizeAndCenter();
+        initializeFrame(rendering);
         addListeners(frame);
 //        rendering.setBackground(clrWindowBackground);
         rendering.setOpaque(true);
     }
 
-    private void initializeScreenComponents() {
-        fps.setFPSLabelDefaultPosition(frame);
-        fps.getLabel().setForeground(fps.getColor());
-        renderButton.getView().setSize(renderButton.getImage().getIconWidth(),
-                renderButton.getImage().getIconHeight());
-        renderButton.getView().addMouseListener(new LabelMouseListener());
+    private void initializeScreenComponents(RenderingComponents renderingComponents) {
+        renderingComponents.getFps().setDefaultPosition(frame);
+        renderingComponents.getFps().getLabel().setForeground(renderingComponents.getFps().getColor());
+        renderingComponents.getRenderButton().getView().setSize(
+                renderingComponents.getRenderButton().getImage().getIconWidth(),
+                renderingComponents.getRenderButton().getImage().getIconHeight());
+        // TODO - Is this statement correct ?
+        renderingComponents.getRenderButton().getView().addMouseListener(
+                new RenderButtonMouseListener(renderingComponents.getRenderButton()));
     }
 
     private void addComponentsToScreen() {
-        frame.add(fps.getLabel());
-        frame.add(renderButton.getView());
+        frame.add(renderingComponents.getFps().getLabel());
+        frame.add(renderingComponents.getRenderButton().getView());
     }
 
     //** Initializing some data - images, frame, adding listeners.
@@ -97,7 +104,7 @@ public class Screen {
 //                oRepository.getClrWindowBackground()
 //        );
         initializeScreen(rendering);
-        initializeScreenComponents();
+        initializeScreenComponents(renderingComponents);
         addComponentsToScreen();
     }
 

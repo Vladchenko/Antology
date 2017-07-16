@@ -6,16 +6,21 @@ package ru.yanchenko.vlad.graphicsapps.listeners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.ImageIcon;
 import ru.yanchenko.vlad.graphicsapps.Repository;
+import ru.yanchenko.vlad.graphicsapps.generics.RenderButton;
 
 /**
  *
  * @author v.yanchenko
  */
-public class LabelMouseListener implements MouseListener {
+public class RenderButtonMouseListener implements MouseListener {
 
     private Repository oRepository = Repository.getInstance();
+    RenderButton renderButton;
+
+    public RenderButtonMouseListener(RenderButton renderButton) {
+        this.renderButton = renderButton;
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -24,11 +29,10 @@ public class LabelMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        oRepository.setImgRenderButton(
-                oRepository.getoLogic().changeLookRenderButtonPressed(
+        renderButton.changeLookRenderButtonPressed(
                 oRepository.getImgRenderButton(),
                 oRepository.getLblRenderButton(),
-                oRepository.getMapStrImages()));
+                oRepository.getMapStrImages());
     }
 
     @Override
@@ -70,11 +74,10 @@ public class LabelMouseListener implements MouseListener {
         }
         //</editor-fold>
 
-        oRepository.setImgRenderButton(
-                oRepository.getoLogic().changeLookRenderButtonReleased(
+        renderButton.changeLookRenderButtonReleased(
                 oRepository.getImgRenderButton(),
                 oRepository.getLblRenderButton(),
-                oRepository.getMapStrImages()));
+                oRepository.getMapStrImages());
 
         //** When an "after convergence" timer is running
 //        if (oRepository.getTmrAfterConvergence().isRunning()) {
@@ -114,19 +117,17 @@ public class LabelMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        oRepository.setImgRenderButton(
-                oRepository.getoLogic().changeLookRenderButtonEntered(
+        renderButton.changeLookRenderButtonEntered(
                 oRepository.getImgRenderButton(),
                 oRepository.getLblRenderButton(),
-                oRepository.getMapStrImages()));
+                oRepository.getMapStrImages());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        oRepository.setImgRenderButton(
-                oRepository.getoLogic().changeLookRenderButtonExited(
+        renderButton.changeLookRenderButtonExited(
                 oRepository.getImgRenderButton(),
                 oRepository.getLblRenderButton(),
-                oRepository.getMapStrImages()));
+                oRepository.getMapStrImages());
     }
 }
